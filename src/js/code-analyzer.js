@@ -4,6 +4,14 @@ import * as esprima from 'esprima';
 // TODO: remove redundant zeros from expressions
 // TODO: handle arrayExpression like [x, 1, y+2]
 
+Object.defineProperty(Array.prototype, 'flat', {
+    value: function(depth = 1) {
+        return this.reduce(function (flat, toFlatten) {
+            return flat.concat((Array.isArray(toFlatten) && (depth-1)) ? toFlatten.flat(depth-1) : toFlatten);
+        }, []);
+    }
+});
+
 function isContainNonLiter_HandleArray(valueJSON) {
     let ans = false;
     for (let i = 0; i < valueJSON['elements'].length; i++)
