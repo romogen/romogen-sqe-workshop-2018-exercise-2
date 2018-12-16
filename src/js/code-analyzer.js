@@ -377,7 +377,7 @@ const parseCode = (codeToParse) => {
 const generateVariablesDecelerations_Paint = (varMap) => {
     let generatedString = '', varNames = Object.keys(varMap);
     for (let i = 0 ; i < varNames.length ; i++){
-        generatedString += 'let ' + varNames[i] + ' = ' + varMap[varNames[i]] + ';';
+        generatedString += 'let ' + varNames[i] + ' = ' + JSON.stringify(varMap[varNames[i]]) + ';';
     }
     return generatedString;
 };

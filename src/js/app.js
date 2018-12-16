@@ -8,7 +8,7 @@ $(document).ready(function () {
     $('#codeSubmissionButton').click(() => {
         let codeToParse = $('#codePlaceholder').val();
         let parsedCode = parseCode(codeToParse);
-        let valuesArray = $('#valuesArray').val().split(',');
+        let valuesArray = $('#valuesArray').val().split('.,');
         if(valuesArray.length !== 1 || valuesArray[0] !== '')
             valuesArray = valuesArray.map(x => eval(x));
         else
