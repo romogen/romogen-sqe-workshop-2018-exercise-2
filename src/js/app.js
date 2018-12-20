@@ -3,12 +3,11 @@ import {parseCode, getPaintRowsOfSubstitutedFunction} from './code-analyzer';
 import * as escodegen from 'escodegen';
 import * as esprima from 'esprima';
 
-
 $(document).ready(function () {
     $('#codeSubmissionButton').click(() => {
         let codeToParse = $('#codePlaceholder').val();
         let parsedCode = parseCode(codeToParse);
-        let valuesArray = $('#valuesArray').val().split('.,');
+        let valuesArray = splitToArray($('#valuesArray').val());
         if(valuesArray.length !== 1 || valuesArray[0] !== '')
             valuesArray = valuesArray.map(x => eval(x));
         else
@@ -20,6 +19,27 @@ $(document).ready(function () {
             replaceSpaceEnter(paintCode(substitutedCode, paintList)) + '</p>';
     });
 });
+
+function changeCountParenthesis(valuesString, i, countParenthesis) {
+    if (valuesString.charAt(i) === ']')
+        countParenthesis--;
+    else if ((valuesString.charAt(i) === '['))
+        countParenthesis++;
+    return countParenthesis;
+}
+
+const splitToArray = (valuesString) => {
+    let startIndex = 0, countParenthesis = 0, valuesArray = [];
+    for (let i = 0 ; i < valuesString.length ; i++){
+        if(countParenthesis === 0 && valuesString.charAt(i) === ','){
+            valuesArray.push(valuesString.substring(startIndex, i));
+            startIndex = i+1;
+        }
+        countParenthesis = changeCountParenthesis(valuesString, i, countParenthesis);
+    }
+    valuesArray.push(valuesString.substring(startIndex, valuesString.length));
+    return valuesArray;
+};
 
 const replaceSpaceEnter = (paintedCode) => {
     paintedCode = paintedCode.split('\n').join('<br>');
